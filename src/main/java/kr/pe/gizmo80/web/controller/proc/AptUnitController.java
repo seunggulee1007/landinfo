@@ -1,0 +1,125 @@
+package kr.pe.gizmo80.web.controller.proc;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import kr.pe.gizmo80.web.bean.AptUnitBean;
+import kr.pe.gizmo80.web.service.aptUnitService.AptUnitService;
+
+/**
+ * 평형 구분 관련 컨트롤러
+ * 
+ * @author bomi
+ *
+ */
+@RestController
+public class AptUnitController {
+
+    @Autowired
+    AptUnitService aptUnitService;
+
+    /**
+     * 단지 리스트
+     * 
+     * @param pageable
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/getAptUnitList")
+    public Map<String, Object> getAptUnitList(
+            @PageableDefault(sort = { "seqNo" }, direction = Direction.DESC, size = 10) Pageable pageable)
+            throws Exception {
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        try {
+            map = aptUnitService.getAptUnitList(pageable);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return map;
+    }
+
+    /**
+     * 단지명 등록
+     * 
+     * @param aptUnitBean
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/regAptUnit")
+    public Map<String, Object> regAptUnit(AptUnitBean aptUnitBean) throws Exception {
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        try {
+            map = aptUnitService.regAptUnit(aptUnitBean);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return map;
+    }
+
+    /**
+     * 단지명 셀렉트 박스용 조회
+     * 
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/getAptUnitCombo")
+    public Map<String, Object> regAptUnitCombo() throws Exception {
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        try {
+            map = aptUnitService.getAptUnitCombo();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return map;
+    }
+
+    /**
+     * 단지명 삭제
+     * 
+     * @param seqNo
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/deleteAptUnit")
+    public Map<String, Object> deleteAptUnit(int seqNo) throws Exception {
+        Map<String, Object> map = new HashMap<String, Object>();
+        System.err.println("deleteAptUnit");
+        try {
+            map = aptUnitService.deleteAptUnit(seqNo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+    
+    /**
+     * 단지명 수정
+     * @param aptUnitBean
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/modifyAptUnit")
+    public Map<String, Object> modifyAptUnit(AptUnitBean aptUnitBean)throws Exception{
+        Map<String, Object> map = new HashMap<String, Object>();
+        
+        try {
+            map = aptUnitService.modifyAptUnit(aptUnitBean);
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+}

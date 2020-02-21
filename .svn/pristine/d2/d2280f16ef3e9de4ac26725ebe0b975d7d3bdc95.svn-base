@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.pe.gizmo80.web.dao.mybatisDao.OtherDAO">
+
+	<insert id="regLand"
+		parameterType="kr.pe.gizmo80.web.bean.OtherBean">
+		insert into tbl_other(
+		seq_no
+		,sale_code
+		,deal_cd
+		,trade_cd
+		,progress_cd
+		,use_yn
+		,sale_name
+		,area_size
+		,land_type
+		,trade_price
+		,now_use
+		,use_plan
+		,detail_note
+		,manage_note
+		,last_chg_dt
+		,image
+		,crt_id
+		,kinds
+		,gubun
+		)values(
+		fn_nextval('seq_other')
+		,#{sale_code}
+		,#{deal_cd}
+		,#{trade_cd}
+		,#{progress_cd}
+		,#{use_yn}
+		,#{sale_name}
+		,#{area_size}
+		,#{land_type}
+		,#{trade_price}
+		,#{now_use}
+		,#{use_plan}
+		,#{detail_note}
+		,#{manage_note}
+		,#{last_chg_dt}
+		,#{image}
+		,#{crt_id}
+		,#{kinds}
+		,#{gubun}
+		)
+	</insert>
+
+	<select id="selectLandList" parameterType="int"
+		resultType="kr.pe.gizmo80.web.bean.OtherBean">
+		select
+		seq_no as seqNo
+		,sale_code
+		,CASE
+		WHEN trade_cd = '1'
+		THEN '매도'
+		WHEN trade_cd = '2'
+		THEN '매수' END AS trade_cd -- 매매 구분
+		, CASE
+		WHEN deal_cd = '1'
+		THEN '매매'
+		WHEN deal_cd = '2'
+		THEN '전세'
+		WHEN deal_cd = '3'
+		THEN '월세'
+		WHEN deal_cd = '4'
+		THEN '단기임대'
+		END AS deal_cd -- 구분
+		,kinds -- 종류
+		,CASE
+		WHEN progress_cd = '1'
+		THEN '등록'
+		WHEN progress_cd = '2'
+		THEN '연락'
+		WHEN progress_cd = '3'
+		THEN '진행'
+		WHEN progress_cd = '4'
+		THEN '계약중'
+		WHEN progress_cd = '5'
+		THEN '협의중'
+		END AS progress_cd
+		,use_yn -- 표출여부
+		,sale_name -- 매물코드
+		,area_size -- 토지면적
+		,land_type -- 지목
+		,FORMAT(trade_price,0) as trade_price -- 매매가
+		,now_use -- 현재용도
+		,use_plan -- 토지이용계획
+		,detail_note -- 세부정보
+		,manage_note -- 운영정보
+		,last_chg_dt -- 최종변경일
+		,image
+		,crt_id
+		, DATE_FORMAT(crt_dtm, '%Y-%m-%d') as crt_dtm
+		from tbl_other
+		where gubun = '5'
+		ORDER BY crt_dtm DESC
+		LIMIT #{limit},10
+	</select>
+</mapper>

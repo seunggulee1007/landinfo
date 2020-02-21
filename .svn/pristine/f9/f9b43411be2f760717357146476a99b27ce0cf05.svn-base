@@ -1,0 +1,58 @@
+package kr.pe.gizmo80.web.bean;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.Data;
+
+@Data
+@Entity
+@Table(name = "tbl_apt_member")
+public class AptMemberBean {
+    @Id
+    /** 매물코드 */
+    @Column(length = 10, name = "apt_code")
+    private String aptCode;
+    /** 매매가/분양가 */
+    @Column(length = 15)
+    private String trade_price;
+    /** 임대보증금 */
+    @Column(length = 15)
+    private String rent_guarantee;
+    @Column(length = 15)
+    private String rent_price;
+    @Column(length = 15)
+    private String move_price_basic;
+    @Column(length = 15)
+    private String move_price_option;
+    @Column(length = 15)
+    private String addon_price;
+    @Column(length = 15)
+    private String last_pay_price;
+    @Column(length = 15)
+    private String tax;
+    @Column(length = 15)
+    private String guarantee;
+    @Column(length = 15)
+    private String law_guarantee;
+    @Column(length = 500)
+    private String old_apt;
+    @Column(length = 50)
+    private String old_apt_size;
+    @Column(length = 20)
+    private String old_floor;
+    @Column(length = 20)
+    private String old_total_floor;
+    @Column(length = 50)
+    private String old_rent;
+    @Column(length = 10)
+    private String new_dong;
+    @Column(length = 10)
+    private String new_floor;
+    @Column(length = 10)
+    private String new_total_floor;
+    @Column(length = 20)
+    private String room_way;
+}

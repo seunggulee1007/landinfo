@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.pe.gizmo80.web.dao.mybatisDao.CommonDAO">
+
+    <!-- 파일 업로드 저장 -->
+    <insert id="insertFile" parameterType="kr.pe.gizmo80.web.bean.FileUpBean">
+        insert into
+            tbl_file(
+            seq_no -- 일련번호
+            ,origin_nm -- 원본파일 이름
+            ,save_nm -- 저장파일 이름
+            ,ext -- 확장자
+            ,img_seq -- 이미지 일련번호
+            ,save_path -- 저장경로
+        )values(
+            fn_nextval('seq_file')
+            ,#{origin_nm}
+            ,#{save_nm}
+            ,#{ext}
+            ,#{img_seq}
+            ,#{save_path}
+        )
+    </insert>
+
+    <!-- 매물번호 조회 -->
+    <select id="selectAptCode" parameterType="hashmap" resultType="String">
+        select fn_aptcd(#{division},#{unit},#{type})
+    </select>
+    
+</mapper>

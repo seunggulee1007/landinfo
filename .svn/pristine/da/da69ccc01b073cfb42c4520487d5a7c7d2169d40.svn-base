@@ -1,0 +1,24 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="UTF-8"%>
+
+<section class="section bg-light">
+    <div id="app" class="container-fluid" v-cloak>
+        <table>
+            <tr>
+                <th>제목</th>
+                <td>{{posts.title}}</td>
+            </tr>
+            <tr>
+                <th>작성자</th>
+                <td>{{posts.crt_id}}</td>
+            </tr>
+            <tr>
+                <th>내용</th>
+                <td v-html="posts.contents">
+            </tr>
+            
+        </table>
+        <input type="hidden" value="${seqNo }" id="seqNo">
+    </div>
+</section>
+
+<script src="/resources/js/lineNote/lineNote.js" th:inline="javascript"></script>

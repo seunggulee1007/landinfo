@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="kr.pe.gizmo80.web.dao.mybatisDao.AptUnitDAO">
+
+    <insert id="insertAptUnit" parameterType="kr.pe.gizmo80.web.bean.AptUnitBean">
+        insert into
+            tbl_apt_unit(
+            seq_no      -- 일련번호
+            ,unit_name  -- 단지명
+            ,note       -- 특징
+            ,info       -- 소개
+            ,image      -- 이미지
+            ,crt_id     -- 등록자
+        )values(
+            fn_nextval('seq_tbl_unit')
+            ,#{unit_name}
+            ,#{note}
+            ,#{info}
+            ,#{image}
+            ,#{crt_id}
+        )
+    </insert>
+
+    <update id="modifyAptUnit" parameterType="kr.pe.gizmo80.web.bean.AptUnitBean">
+        update
+            tbl_apt_unit
+                set
+                    chg_id = #{crt_id}
+                    ,chg_dtm = sysdate()
+                    <if test="unit_name != '' and unit_name != null">
+                        ,unit_name = #{unit_name} 
+                    </if>
+                    <if test="note != '' and note != null">
+                        ,note = #{note}
+                    </if>
+                    <if test="info != '' and info != null">
+                        ,info = #{info}
+                    </if>
+                    <if test="image != '' and image != null">
+                        image = #{image}
+                    </if>
+           where
+                seq_no  = #{seqNo}
+                    
+    </update>
+</mapper>

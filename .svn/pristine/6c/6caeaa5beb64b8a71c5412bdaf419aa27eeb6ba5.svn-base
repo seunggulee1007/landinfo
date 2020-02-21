@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.pe.gizmo80.web.dao.mybatisDao.AptGroupDAO">
+
+    <insert id="regAptGroup" parameterType="kr.pe.gizmo80.web.bean.AptGroupBean">
+        insert into tbl_apt_group(
+            apt_code
+            ,dong
+            ,level
+            ,total_level
+            ,room_way
+            ,trade_price
+            ,payment_price
+            ,middle_lone_price
+            ,add_payment_price
+            ,premium_price
+            ,pre_option_price
+            ,option_price
+            ,use_yn
+            ,seq_no
+            ,unit_seq
+            ,trade_cd
+            ,deal_cd
+            ,pyeong
+            ,progress_cd
+            ,last_chg_dt
+            ,crt_id
+            ,move_in_dt
+            ,detail_note
+            ,manage_note
+            ,image
+        )values(
+            #{aptCode}
+            ,#{dong}
+            ,#{level}
+            ,#{total_level}
+            ,#{room_way}
+            ,#{trade_price}
+            ,#{payment_price}
+            ,#{middle_lone_price}
+            ,#{add_payment_price}
+            ,#{premium_price}
+            ,#{pre_option_price}
+            ,#{option_price}
+            ,#{use_yn}
+            ,fn_nextval('seq_tbl_group')
+            ,#{unit_seq}
+            ,#{trade_cd}
+            ,#{deal_cd}
+            ,#{pyeong}
+            ,#{progress_cd}
+            ,#{last_chg_dt}
+            ,#{crt_id}
+            ,#{move_in_dt}
+            ,#{detail_note}
+            ,#{manage_note}
+            ,#{image}
+        )
+    </insert>
+
+    <select id="selectAptGroupList" parameterType="int" resultType="kr.pe.gizmo80.web.bean.AptGroupBean">
+        select
+            apt_code as aptCode
+            , dong
+            , level
+            , total_level
+            , room_way
+            , fn_price_format(trade_price) as trade_price
+            , fn_price_format(payment_price) as payment_price
+            , fn_price_format(middle_lone_price ) as middle_lone_price
+            , fn_price_format(add_payment_price) as add_payment_price
+            , fn_price_format(premium_price) as premium_price
+            , fn_price_format(option_price) as option_price
+            , fn_price_format(pre_option_price) as pre_option_price
+            , crt_id
+            , DATE_FORMAT(crt_dtm, '%Y-%m-%d') as crt_dtm
+            , use_yn
+            , seq_no
+            , unit_seq
+            , CASE
+            WHEN trade_cd = '1'
+            THEN '매도'
+            WHEN trade_cd = '2'
+            THEN '매수' END AS trade_cd
+            , CASE
+            WHEN deal_cd = '1'
+            THEN '즉시계약가능'
+            WHEN deal_cd = '2'
+            THEN '계약대기'
+            WHEN deal_cd = '3'
+            THEN '협의중' END AS deal_cd
+            , CASE
+            WHEN progress_cd = '1'
+            THEN '등록'
+            WHEN progress_cd = '2'
+            THEN '연락'
+            WHEN progress_cd = '3'
+            THEN '진행'
+            WHEN progress_cd = '4'
+            THEN '계약중'
+            WHEN progress_cd = '5'
+            THEN '협의중'
+            END AS progress_cd
+            ,last_chg_dt
+            ,move_in_dt
+            ,detail_note
+            ,manage_note
+            ,image
+            ,pyeong
+            , CAST(trade_price AS UNSIGNED) + CAST(premium_price AS UNSIGNED) AS
+            total_price
+            ,CAST(payment_price AS UNSIGNED) + CAST(premium_price AS UNSIGNED) +
+            CAST(pre_option_price AS UNSIGNED) AS start_price
+        from tbl_apt_group
+        ORDER BY crt_dtm DESC
+        LIMIT #{limit},10
+    </select>
+</mapper>

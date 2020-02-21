@@ -1,0 +1,103 @@
+
+var app = new Vue({
+    el : "#app",
+    data : {
+        options : []
+        ,errors : []
+        ,selected : ''
+        ,posts : []
+    },
+    created : function(){                        // 돔이 로딩 되기 전 리스트를 불러온다.
+        this.getAptAreaList();
+        this.getAptUnitCombo();
+    },
+    methods : {
+        regAptArea : function(){                        // 평형 등록 메서드
+            var form = new FormData($("#regImg")[0]);
+            $.ajax({
+                url: "/multifile",                      //컨트롤러 URL
+                data: form,
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function (response) {
+                  console.log(response);
+                  doRegAptArea(response);
+                },error: function (jqXHR) {
+                    alert(jqXHR.responseText);
+                }
+            });
+        },
+        getAptAreaList : function(){
+            axios({
+                url : "/getAptAreaList",
+                method: "post",
+            }).then(function(response){
+                this.posts = response.data.list;
+            }.bind(this))
+            .catch(function(e){
+                alert(e);
+            });
+        },
+        getAptUnitCombo : function(){
+            axios({
+                method : "post",
+                url : "/getAptUnitCombo"
+            })
+            .then(function(response){
+                console.log(response);
+                this.options = response.data.list
+                console.log(this.options);
+            }.bind(this))
+            .catch(function(e){
+                alert(e);
+            });
+        },
+        selectAptArea : function(){
+            axios({
+                url : "/selectAptArea",
+                method : "post",
+                params : {
+                    seq_no : this.selected
+                }
+            })
+            .then(function(response){
+                this.posts = response.data.list;
+            }.bind(this))
+            .catch(function(e){
+                alert(e);
+            });
+        }
+    },
+    watch : {
+        selected : function(){
+            
+        }
+    }
+});
+function doRegAptArea(img){
+    
+    $.ajax({
+        method : "post",
+        url : "/regAptArea",
+        data : { 
+            unit_seq            : $("#unit_seq").val()
+            ,type               : $("#type").val()
+            ,pyeong             : $("#pyeong").val()
+            ,exclusive_area     : $("#exclusive_area").val()
+            ,com_liv_area       : $("#com_liv_area").val()
+            ,com_etc_area       : $("#com_etc_area").val()
+            ,land_portion       : $("#land_portion").val()
+            ,households         : $("#households").val()
+            ,image              : img
+        },
+        error : function(error) {
+            alert(error);
+        },
+        success : function(data) {
+            alert(data.resultMsg);
+            location.reload();
+        }
+    })
+}

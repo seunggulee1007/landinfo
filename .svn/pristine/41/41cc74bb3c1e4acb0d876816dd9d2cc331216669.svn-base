@@ -1,0 +1,146 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<section class="section bg-light">
+	<div class="container-fluid" id="app">
+	   	<div class="row">
+	       	<div class="col">
+	           	<h3 class="mb-5">토지</h3>
+	               
+	            <!-- 입력 폼 -->
+	            <form class="">
+	                <!-- 조회 조건 -->
+	                <div class="row">
+                    	<div class="col-6">
+                        	<div class="form-group row">
+                                <div class="col-md-6 col-lg-3 mb-1">
+                                    <select id="unit_seq" class="form-control" v-model="selected">
+                                        <option disabled value="">단지명</option>
+                                        <option v-for="option in options" v-bind:value="option.seqNo">{{option.unit_name}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 col-lg-3 mb-1">
+                                    <select class="form-control">
+                                        <option value = "1">매도</option>
+                                        <option value = "2">매수</option>
+                                    </select>
+                                </div>
+                                 <div class="col-md-6 col-lg-3 mb-1">
+                                     <select class="form-control" v-model="setCombo">
+                                        <option disabled value="">평형</option>
+                                        <option v-for="combo in aptAreaCombo" v-bind:value="combo.seqNo">{{combo.pyeong}}</option>
+                                    </select> 
+                                </div>
+                                <div class="col-md-6 col-lg-3 mb-1">
+                                    <select class="form-control">
+                                        <option value="">거래구분</option>
+                                        <option value="1">즉시계약가능</option>
+                                        <option value="2">계약대기</option>
+                                        <option value="3">협의중 </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+	                    
+                        <div class="col-5 offset-1">
+                        	<div class="form-group row">
+                                <div class="col-md-12 col-lg-6 mb-1">
+                                    <select class="form-control">
+                                        <option>진행정보</option>
+                                        <option value="1">등록</option>
+                                        <option value="2">연락</option>
+                                        <option value="3">진행</option>
+                                        <option value="4">계약중</option>
+                                        <option value="5">협의중</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-12 col-lg-6 mb-1">
+                                    <select class="form-control">
+                                        <option>표출여부</option>
+                                        <option value="Y">표출</option>
+                                        <option value="N">미표출</option>
+                                        <option>3</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+	                </div>
+	                <!-- 조회 조건 -->
+	                
+	                <h4 class="">매물정보</h4>
+	                <div class="form-group row">
+	                    <div class="col-sm-4 col-md-3 col-lg-2 mb-1">
+	                        <input type="text" class="form-control" id="" placeholder="매물명" name="">
+	                    </div>
+	                    <div class="col-sm-4 col-md-3 col-lg-2 mb-1">
+	                        <input type="text" class="form-control" id="" placeholder="면적" name="">
+	                    </div>
+	                    <div class="col-sm-4 col-md-3 col-lg-2 mb-1">
+	                        <input type="text" class="form-control" id="" placeholder="지목" name="">
+	                    </div>
+	                    <div class="col-sm-4 col-md-3 col-lg-2 mb-1">
+	                        <input type="text" class="form-control" id="" placeholder="매물가(평)" name="">
+	                    </div>
+	                    <div class="col-sm-4 col-md-3 col-lg-2 mb-1">
+	                        <input type="text" class="form-control" id="" placeholder="현재용도" name="">
+	                    </div>
+	                    <div class="col-sm-4 col-md-3 col-lg-2 mb-1">
+	                        <input type="text" class="form-control" id="" placeholder="토지이용계획" name="">
+	                    </div>
+	                </div>
+	                
+	                <h4 class="">세부정보</h4>
+	                <div class="form-group row">
+	                    <div class="col">
+	                        <textarea  class="form-control" id="" placeholder="세부정보" name=""></textarea>
+	                    </div>
+	                </div>
+	                
+	                <h4 class="">운영정보</h4>
+	                <div class="form-group row">
+	                    <div class="col">
+	                        <textarea class="form-control" id="" placeholder="운영정보" name=""></textarea>
+	                    </div>
+	                </div>
+	                  
+	                <!-- 이미지 -->
+	                <div class="form-group row img-group">
+	                    <div class="col-3">
+	                    	<div class="img-box">
+	                    		<label for="img1"><img class="img-fluid" src="" onerror="this.src='/resources/images/no-image.png'"/></label>
+	                        	<input type="file" class="d-none" id="img1">
+	                    	</div>
+	                    </div>
+	                    <div class="col-3">
+	                    	<div class="img-box">
+		                        <label for="img2"><img class="img-fluid" src="" onerror="this.src='/resources/images/no-image.png'"/></label>
+		                        <input type="file" class="d-none" id="img2">
+	                        </div>
+	                    </div>
+	                    <div class="col-3">
+	                    	<div class="img-box">
+		                        <label for="img3"><img class="img-fluid" src="" onerror="this.src='/resources/images/no-image.png'"/></label>
+		                        <input type="file" class="d-none" id="img3">
+	                        </div>
+	                    </div>
+	                    <div class="col-3">
+	                    	<div class="img-box">
+		                        <label for="img4"><img class="img-fluid" src="" onerror="this.src='/resources/images/no-image.png'"/></label>
+		                        <input type="file" class="d-none" id="img4">
+	                        </div>
+	                    </div>
+	                </div>
+	            	<!-- 이미지 -->
+	                
+	                <!-- 등록 버튼 -->
+	                <div class="row mt-2">
+						<div class="col-sm-3 btn btn-dark m-auto">등록</div>	                
+	                </div>
+	                <!-- 등록 버튼 -->
+	            </form>
+	            <!-- 입력 폼 -->
+	               
+	               
+	        </div>
+	    </div>
+	</div>
+</section>

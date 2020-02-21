@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.pe.gizmo80.web.dao.mybatisDao.AptAreaDAO">
+
+    <insert id="regAptArea" parameterType="kr.pe.gizmo80.web.bean.AptAreaBean">
+        insert into tbl_apt_area(
+            seq_no
+            ,type
+            ,pyeong
+            ,exclusive_area
+            ,com_liv_area
+            ,com_etc_area
+            ,land_portion
+            ,households
+            ,crt_id
+            ,unit_seq
+            ,image
+        )values(
+            fn_nextval('seq_tbl_area')
+            ,#{type}
+            ,#{pyeong}
+            ,#{exclusive_area}
+            ,#{com_liv_area}
+            ,#{com_etc_area}
+            ,#{land_portion}
+            ,#{households}
+            ,#{crt_id}
+            ,#{unit_seq}
+            ,#{image}
+        )
+    </insert>
+
+    <select id="getAptAreaCombo" parameterType="int" resultType="kr.pe.gizmo80.web.bean.AptAreaBean">
+        select
+            seq_no
+            ,pyeong
+        from tbl_apt_area
+        where unit_seq = #{seq_no}
+    </select>
+
+    <select id="selectAptAreaList" parameterType="int" resultType="kr.pe.gizmo80.web.bean.AptAreaBean">
+        select
+            seq_no     as seqNo -- 일련번호
+            ,type               -- 타입
+            ,pyeong             -- 평형
+            ,exclusive_area     -- 전용면적
+            ,com_liv_area       -- 주거공용면적
+            ,com_etc_area       -- 기타공용면적
+            ,land_portion       -- 대지지분
+            ,cast(exclusive_area AS UNSIGNED) + cast(com_liv_area as UNSIGNED) as supply_area
+            ,cast(exclusive_area AS UNSIGNED) + cast(com_liv_area as UNSIGNED) + cast(com_etc_area as UNSIGNED) as contract_area
+            ,unit_seq
+            ,crt_id
+            ,DATE_FORMAT(crt_dtm, '%Y-%m-%d') as crt_dtm
+            ,image
+        from tbl_apt_area
+        order by crt_dtm desc
+        LIMIT #{limit},10
+    </select>
+    
+    <update id="modifyAptArea" parameterType="kr.pe.gizmo80.web.bean.AptAreaBean">
+        update
+            tbl_apt_area
+                set
+                    chg_id = #{crt_id}
+                    ,chg_dtm = sysdate()
+                    <if test="unit_seq != '' and unit_seq != null">
+                        ,unit_seq = #{unit_seq}
+                    </if>
+                    <if test="type != '' and type != null">
+                        ,type = #{type}
+                    </if>
+                    <if test="pyeong != '' and pyeong != null">
+                        ,pyeong = #{pyeong}
+                    </if>
+                    <if test="exclusive_area != '' and exclusive_area != null">
+                        ,exclusive_area = #{exclusive_area}
+                    </if>
+                    <if test="com_liv_area != '' and com_liv_area != null">
+                        ,com_liv_area = #{com_liv_area}
+                    </if>
+                    <if test="com_etc_area != '' and com_etc_area != null">
+                        ,com_etc_area = #{com_etc_area}
+                    </if>
+                    <if test="land_portion != '' and land_portion != null">
+                        ,land_portion = #{land_portion}
+                    </if>
+                    <if test="households != '' and households != null">
+                        ,households = #{households}
+                    </if>
+                    <if test="image != '' and image != null">
+                        , image = #{image}
+                    </if>
+                where 
+                    seq_no = #{seqNo}
+    </update>
+</mapper>

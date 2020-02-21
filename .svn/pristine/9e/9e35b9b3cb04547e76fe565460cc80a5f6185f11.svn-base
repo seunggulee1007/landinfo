@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.pe.gizmo80.web.dao.mybatisDao.LoginDAO">
+ 
+    <select id="doLogin" resultType="kr.pe.gizmo80.web.bean.UserBean">
+        select
+            user_name
+            ,hnd_no
+            ,email
+            ,case
+    			when 
+    				passwd = password(#{passwd}) then 'Y'
+    				else 'N' end as passwd
+    		,error_cnt
+    		,status
+    		,user_id as userId
+        from tbl_user
+        where
+            user_id = #{userId}
+    </select>
+    
+    <update id="updateErrCnt" parameterType="kr.pe.gizmo80.web.bean.UserBean">
+    	update
+    		tbl_user
+    			set
+    				error_cnt = #{error_cnt}
+    				,status   = #{status}
+    		where user_id = #{userId}
+    </update>
+</mapper>

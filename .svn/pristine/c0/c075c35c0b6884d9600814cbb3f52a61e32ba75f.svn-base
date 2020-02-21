@@ -1,0 +1,49 @@
+package kr.pe.gizmo80.web.bean;
+
+import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.Data;
+
+/**
+ * 평형 구분 Bean
+ * 
+ * @author bomi
+ *
+ */
+@Data
+@Entity
+@Table(name = "tbl_apt_area")
+public class AptAreaBean {
+
+    @Id
+    @Column(name = "seq_no")
+    private int seqNo; // 일련번호
+    @Column(length = 3)
+    private String type; // 타입
+    @Column(length = 3)
+    private String pyeong; // 평형
+    @Column(length = 3)
+    private String exclusive_area; // 전용면적
+    @Column(length = 3)
+    private String com_liv_area; // 주거공용면적
+    @Column(length = 3)
+    private String com_etc_area; // 기타공용 면적
+    @Column(length = 10)
+    private String land_portion; // 대지 지분
+    @Column(length = 2)
+    private String households; // 세대수
+    @Column(length = 50)
+    private String crt_id; // 등록자
+    @Column
+    private Timestamp crt_dtm; // 등록일
+    @Column
+    private int unit_seq; // 단지명 일련번호
+    @Column(length = 20)
+    private String image; // 사진
+
+}

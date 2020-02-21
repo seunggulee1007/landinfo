@@ -1,0 +1,101 @@
+
+var app = new Vue({
+    el : "#app",
+    data : {
+        options         : []                        // 단지명 담을 변수
+        ,errors         : []                        // 에러 담을 변수
+        ,selected       : ''                        // 단지명 변경 감지 변수
+        ,new_selected   : ''                        // 신규단지명 변경 감지 변수
+        ,setCombo       : ''
+        ,aptAreaCombo   : []                        // 평형 콤보 담을 변수
+        ,new_options    : []                        // 신규 단지명
+    },
+    created : function(){                           // 돔이 로딩 되기 전 실행되는 메서드.
+        axios({
+            method : "post",
+            url : "/getAptUnitCombo"                // 단지명 콤보 가져올 url
+        })
+        .then(function(response){
+            this.options     = response.data.list   // 기존 단지명 세팅
+            this.new_options = response.data.list   // 신규 단지명 세팅
+        }.bind(this))
+        .catch(function(e){
+            alert(e);
+        });
+    },
+    methods : {
+        regAptBasic : function(){                   // 아파트 등록 메서드(이미지 먼저 등록)
+            var form = new FormData($("#regImg")[0]);
+            $.ajax({
+                url         : "/multifile",         //컨트롤러 URL
+                data        : form,
+                dataType    : 'json',
+                processData : false,
+                contentType : false,
+                type        : 'POST',
+                success     : function (response) {
+                    doRegAptBasic(response);
+                },error     : function (jqXHR) {
+                    alert(jqXHR.responseText);
+                }
+            });
+        },
+        getAptAreaCombo : function(){
+            axios({
+                url     : "/getAptAreaCombo",
+                method  : "post",
+                params  : {
+                    seq_no : this.selected
+                }
+            })
+            .then(function(response){
+                this.aptAreaCombo = response.data.list;
+            }.bind(this))
+        }
+            
+    },
+    watch : {                                           // 감시형  값이 변경될때마다 작동
+        selected : function(){
+            this.getAptAreaCombo();
+        }
+    }
+});
+
+
+function doRegAptBasic(img){
+    $.ajax({
+        method : "post",
+        url : "/regAptBasic",
+        data : {
+            unit_seq        : $("#unit_seq").val()      // 단지명
+            ,trade_cd       : $("#trade_cd").val()      // 매매 구분
+            ,pyeong         : $("#pyeong").val()        // 평형
+            ,deal_cd        : $("#deal_cd").val()       // 거래구분
+            ,progress_cd    : $("#progress_cd").val()   // 진행정보
+            ,use_yn         : $("#use_yn").val()        // 표출여부
+            ,dong           : $("#dong").val()          // 해당동
+            ,level          : $("#level").val()         // 해당층
+            ,total_level    : $("#total_level").val()   // 총층
+            ,room_way       : $("#room_way").val()      // 방향
+            ,room_count     : $("#room_count").val()    // 방수
+            ,restroom_count : $("#restroom_count").val()// 욕실수
+            ,trade_price    : $("#trade_price").val()   // 매매가
+            ,rent_guarantee : $("#rent_guarantee").val()// 임대보증금
+            ,rent_price     : $("#rent_price").val()    // 대출금
+            ,tax            : $("#tax").val()           // 예상취등록세
+            ,guarantee      : $("#guarantee").val()     // 중개수수료
+            ,law_guarantee  : $("#law_guarantee").val() // 법무비용
+            ,detail_note    : $("#detail_note").val()   // 세부정보
+            ,manage_note    : $("#manage_note").val()   // 운영정보
+            ,last_chg_dt    : $("#last_chg_dt").val().replace(/-/gi,"") // 최종변경일
+            ,image                 : img
+        },
+        error : function(error) {
+            alert(error);
+        },
+        success : function(data) {
+            alert(data.resultMsg);
+            location.reload();
+        }
+    })
+}

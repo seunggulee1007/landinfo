@@ -1,0 +1,36 @@
+package kr.pe.gizmo80.web.bean;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import lombok.Data;
+
+/**
+ * 라인노트 Bean
+ * 
+ * @author bomi
+ *
+ */
+@Data
+@Entity
+@Table(name = "tbl_line_note")
+public class LineNoteBean {
+
+    @Id
+    @Column(name = "seq_no")
+    private int seqNo; // 일련번호
+    @Column(length = 4000)
+    private String title; // 제목
+    @Column(length = 4000)
+    private String contents; // 내용
+    @Column
+    private int reply_seq; // 댓글 일련번호
+    @Column(length = 20)
+    private String crt_id; // 등록자
+    @Transient
+    private String crt_dtm; // 등록일
+
+}

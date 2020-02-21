@@ -1,0 +1,40 @@
+package kr.pe.gizmo80.web.service.aptMemberService;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import kr.pe.gizmo80.com.config.Constants;
+import kr.pe.gizmo80.com.service.LandInfoService;
+import kr.pe.gizmo80.web.bean.AptMemberBean;
+import kr.pe.gizmo80.web.dao.jpaDao.JpaAptMemberDAO;
+
+@Service
+public class AptMemberServiceImpl extends LandInfoService implements AptMemberService {
+
+    @Autowired
+    JpaAptMemberDAO jpaAptMemberDAO;
+
+    public Map<String, Object> getAptMemberList(Pageable pageable) throws Exception {
+        Map<String, Object> map = new HashMap<String, Object>();
+        String result = Constants.OK;
+        String resultMsg = "";
+        try {
+            Page<AptMemberBean> list = jpaAptMemberDAO.findAll(pageable);
+            map.put("list", list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = Constants.FAIL;
+            resultMsg = "시스템오류 !!! " + e.getMessage();
+        }
+
+        map.put("result", result);
+        map.put("resultMsg", resultMsg);
+
+        return map;
+    }
+}

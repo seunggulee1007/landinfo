@@ -1,0 +1,90 @@
+
+
+var app = new Vue({
+    el : "#app",
+    data : {
+        posts:[]
+        ,errors : []
+    },
+    created : function(){                        // 돔이 로딩 되기 전 리스트를 불러온다.
+         axios({
+             method : "get",
+             url : "/getAptUnitList"
+         })
+         .then(function(response){
+             this.posts = response.data.list
+             console.log(this.posts);
+         }.bind(this))
+         .catch(function(e){
+             this.errors.push(e)
+         });
+    },
+    methods : {
+        regAptUnit : function(){                        // 단지 등록 메서드
+            var form = new FormData($("#regImg")[0]);
+            $.ajax({
+                url: "/multifile",                      //컨트롤러 URL
+                data: form,
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function (response) {
+                  console.log(response);
+                  doRegAptUnit(response);
+                },error: function (jqXHR) {
+                    alert(jqXHR.responseText);
+                }
+            });
+        },
+        deleteAptUnit : function(seq){
+            if(!confirm("삭제하시겠습니까?")){
+                return;
+            }
+            axios({
+                method : "delete",
+                url    : "/deleteAptUnit",
+                params : {
+                    seqNo : seq
+                }
+            }).then(function(response){
+                this.posts = response.data.list
+                console.log(this.posts);
+            }.bind(this))
+            .catch(function(e){
+            });
+        },
+        click : function(unit_name,note,info){
+            $("#unit_name").val(unit_name);
+            $("#note").val(note);
+            $("#info").val(info);
+            $("#modifyBtn").disabled = false;
+            $("#regBtn").disabled = 'disabled';
+        }
+            
+    }
+});
+
+
+function doRegAptUnit(img){
+    
+            $.ajax({
+                method : "post",
+                url : "/regAptUnit",
+                data : { 
+                    unit_name : $("#unit_name").val()
+                    ,note     : $("#note").val()
+                    ,info     : $("#info").val()
+                    ,image    : img
+                },
+                error : function(error) {
+                    alert(error);
+                },
+                success : function(data) {
+                    alert(data.resultMsg);
+                    location.reload();
+                }
+                
+            })
+    
+}

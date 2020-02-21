@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.pe.gizmo80.web.dao.mybatisDao.AptMemberDAO">
+
+    <select id="selectAptMemberList" parameterType="int" resultType="kr.pe.gizmo80.web.bean.AptMemberBean">
+        select
+            fn_unit_nm(unit_seq) as unit_name
+            ,apt_code
+            ,fn_trade_cd(trade_cd) as trade_cd
+            ,pyeong
+            ,fn_deal_cd(deal_cd)    as deal_cd
+            ,fn_progress_cd(progress_cd) as progress_cd
+            ,use_yn
+            ,last_chg_dt
+            ,origin_area
+            ,level
+            ,total_level
+            ,origin_lease_history
+            ,fn_unit_nm(new_unit_seq) as new_unit_name
+            ,new_area
+            ,new_dong
+            ,new_level
+            ,new_total_level
+            ,room_way
+            ,fn_price_format(trade_price) as trade_price
+            ,fn_price_format(rent_guarantee) as rent_guarantee
+            ,fn_price_format(rent_price) as rent_price
+            ,fn_price_format(migration_basic) as migration_basic
+            ,fn_price_format(migration_add) as migration_add
+            ,fn_price_format(add_payment_price) as add_payment_price
+            ,fn_price_format(pre_payment_price) as pre_payment_price
+            ,fn_price_format(expect_taking_price) as expect_taking_price
+            ,fn_price_format(brokerage_fee) as brokerage_fee
+            ,fn_price_format(legal_costs) as legal_costs
+            ,detail_note
+            ,manage_note
+            ,crt_id
+            ,DATE_FORMAT(crt_dtm, '%Y-%m-%d') as crt_dtm
+        from tbl_apt_member
+        ORDER BY crt_dtm DESC
+        LIMIT #{limit},10
+    </select>
+    
+    <insert id="regAptMember" parameterType="kr.pe.gizmo80.web.bean.AptMemberBean">
+        insert
+            into tbl_apt_member(
+                seq_no
+                ,apt_code
+                ,unit_seq
+                ,trade_cd
+                ,pyeong
+                ,deal_cd
+                ,progress_cd
+                ,use_yn
+                ,last_chg_dt
+                ,origin_area
+                ,level
+                ,total_level
+                ,origin_lease_history
+                ,new_unit_seq
+                ,new_area
+                ,new_dong
+                ,new_level
+                ,new_total_level
+                ,room_way
+                ,trade_price
+                ,rent_guarantee
+                ,rent_price
+                ,migration_basic
+                ,migration_add
+                ,add_payment_price
+                ,pre_payment_price
+                ,expect_taking_price
+                ,brokerage_fee
+                ,legal_costs
+                ,detail_note
+                ,manage_note
+                ,image
+                ,crt_id
+            )values(
+                fn_nextval('seq_apt_member')
+                ,#{apt_code}
+                ,#{unit_seq}
+                ,#{trade_cd}
+                ,#{pyeong}
+                ,#{deal_cd}
+                ,#{progress_cd}
+                ,#{use_yn}
+                ,#{last_chg_dt}
+                ,#{origin_area}
+                ,#{level}
+                ,#{total_level}
+                ,#{origin_lease_history}
+                ,#{new_unit_seq}
+                ,#{new_area}
+                ,#{new_dong}
+                ,#{new_level}
+                ,#{new_total_level}
+                ,#{room_way}
+                ,#{trade_price}
+                ,#{rent_guarantee}
+                ,#{rent_price}
+                ,#{migration_basic}
+                ,#{migration_add}
+                ,#{add_payment_price}
+                ,#{pre_payment_price}
+                ,#{expect_taking_price}
+                ,#{brokerage_fee}
+                ,#{legal_costs}
+                ,#{detail_note}
+                ,#{manage_note}
+                ,#{image}
+                ,#{crt_id}
+            )
+            
+            
+                
+           
+    </insert>
+</mapper>

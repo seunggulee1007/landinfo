@@ -1,0 +1,38 @@
+logging:
+  file: logs/spring-boot-logging.log
+  level:
+    com:
+      pristinecore:
+        sbtest:
+          rest: DEBUG
+    org:
+      hibernate: info
+      springframework:
+        web: INFO
+spring:
+  datasource:
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    password: landinfo8875!
+    url: jdbc:log4jdbc:mysql://210.109.108.62:3336/landinfo
+    username: landinfo
+  devtools:
+    livereload:
+      enabled: true
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  mvc:
+    static-path-pattern: /resources/**
+    view:
+      prefix: /WEB-INF/view/
+      suffix: .jsp
+  servlet:
+    multipart:
+      max-file-size: 1MB
+      max-request-size: 1MB
+  thymeleaf:
+    cache: false

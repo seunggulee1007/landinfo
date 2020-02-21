@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.pe.gizmo80.web.dao.mybatisDao.AptBasicDAO">
+
+    <insert id="regAptBasic" parameterType="kr.pe.gizmo80.web.bean.AptBasicBean">
+        insert into tbl_apt_basic(
+            seq_no
+            ,apt_code
+            ,dong
+            ,level
+            ,total_level
+            ,room_way
+            ,room_count
+            ,restroom_count
+            ,trade_price
+            ,rent_guarantee
+            ,rent_price
+            ,tax
+            ,guarantee
+            ,law_guarantee
+            ,other_price
+            ,crt_id
+            ,unit_seq
+            ,trade_cd
+            ,last_chg_dt
+            ,detail_note
+            ,manage_note
+            ,image
+            ,deal_cd
+            ,progress_cd
+            ,pyeong
+            ,use_yn
+        )values(
+            fn_nextval('seq_apt_basic')
+            ,#{apt_code}
+            ,#{dong}
+            ,#{level}
+            ,#{total_level}
+            ,#{room_way}
+            ,#{room_count}
+            ,#{restroom_count}
+            ,#{trade_price}
+            ,#{rent_guarantee}
+            ,#{rent_price}
+            ,#{tax}
+            ,#{guarantee}
+            ,#{law_guarantee}
+            ,#{other_price}
+            ,#{crt_id}
+            ,#{unit_seq}
+            ,#{trade_cd}
+            ,#{last_chg_dt}
+            ,#{detail_note}
+            ,#{manage_note}
+            ,#{image}
+            ,#{deal_cd}
+            ,#{progress_cd}
+            ,#{pyeong}
+            ,#{use_yn}
+        )
+    </insert>
+    
+    <select id="selectAptBasicList" parameterType="int" resultType="kr.pe.gizmo80.web.bean.AptBasicBean">
+        select 
+            seq_no as seqNo
+            ,apt_code
+            ,dong
+            ,level
+            ,total_level
+            ,room_way
+            ,room_count
+            ,restroom_count
+            ,FORMAT(trade_price,0) as trade_price
+            ,FORMAT(rent_guarantee,0) as rent_guarantee
+            ,FORMAT(rent_price, 0) as rent_price
+            ,FORMAT(tax, 0) as tax
+            ,FORMAT( guarantee, 0) as guarantee
+            ,FORMAT(law_guarantee, 0) as law_guarantee
+            ,FORMAT(other_price,0) as other_price
+            ,crt_id
+            ,DATE_FORMAT(crt_dtm, '%Y-%m-%d') as crt_dtm
+            , CASE 
+                WHEN trade_cd = '1' 
+                THEN '매도'
+                WHEN trade_cd = '2'
+                THEN '매수' END AS trade_cd
+            , CASE 
+                WHEN deal_cd = '1' 
+                THEN '즉시계약가능' 
+                WHEN deal_cd = '2' 
+                THEN '계약대기' 
+                WHEN deal_cd = '3' 
+                THEN '협의중' END AS deal_cd
+            , CASE 
+                WHEN progress_cd = '1' 
+                THEN '등록' 
+                WHEN progress_cd = '2' 
+                THEN '연락' 
+                WHEN progress_cd = '3' 
+                THEN '진행' 
+                WHEN progress_cd = '4' 
+                THEN '계약중' 
+                WHEN progress_cd = '5' 
+                THEN '협의중' 
+                END AS progress_cd
+            ,last_chg_dt
+            ,detail_note
+            ,manage_note
+            ,image
+            ,pyeong
+            ,CAST(trade_price AS UNSIGNED) - CAST(rent_guarantee AS UNSIGNED) - CAST(rent_price AS UNSIGNED) AS start_price
+            from tbl_apt_basic
+            ORDER BY crt_dtm DESC
+            LIMIT #{limit},10
+    </select>
+</mapper>

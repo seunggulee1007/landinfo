@@ -1,0 +1,28 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+
+<!-- 네이버 스마트에디터  -->
+<script src="/resources/smarteditor/js/service/HuskyEZCreator.js"></script>
+<section class="section bg-light">
+    <div class="container-fluid" id="app">
+        <form action="/regLineNote">
+            <table>
+                <tr>
+                    <td>제목</td>
+                    <td><input type="text" id="title" name="title"></td>
+                </tr>
+                <tr>
+                    <td>내용</td>
+                    <td>
+                        <textarea name="contents" id="contents">
+                        </textarea>
+                    </td>
+                </tr>
+            </table>
+            <button type="button" id="regLineNote" @click="regLineNote()">등록</button>
+        </form>
+    </div>
+</section>
+
+<script src="/resources/js/lineNote/regLineNote.js"></script>
+

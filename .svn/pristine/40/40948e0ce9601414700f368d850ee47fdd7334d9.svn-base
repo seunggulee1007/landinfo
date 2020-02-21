@@ -1,0 +1,199 @@
+﻿$(document).ready(function(){
+    var userInputId = getCookie("Cookie_userid");
+    $("#user_id").val(userInputId); 
+
+    if($("#user_id").val() != ""){ 
+        $("#saveId").attr("checked", true); 
+        $("#passwd").focus();
+    }else{
+    	$("#user_id").focus();
+    }
+     
+    $("#confirm").click(function(){
+        doLogin();
+    });
+    $("#passwd").keydown(function(e){
+        if(e.keyCode == 13){
+            doLogin();
+        }
+    });
+})
+
+/**
+ * 로그인 함수
+ * @returns
+ */
+function doLogin(){
+    
+    if($("#saveId").is(":checked")){                // 아이디 저장이 체크되어 있다면
+        var userId = $("#user_id").val();           // 아이디 값 세팅
+        setCookie("Cookie_userid", userId, 30);     // 쿠키에 저장.
+    }else{
+        deleteCookie("Cookie_userid");              // 쿠키 삭제
+    }
+    console.log('asdfasdf');
+    $.ajax({
+        url : "/doLogin",                           // requesturl
+        method : "post",                        
+        data : { 
+            userId : $("#user_id").val()            // 아이디
+            ,passwd : $("#passwd").val()            // 비밀번호
+        },success : function(data) {                // 통신 성공시
+            console.log(data);
+            if(data.result == "ok"){            
+                location.replace("/index");
+            }else{
+                alert(data.resultMsg);
+            }
+       }
+   }) 
+}
+
+
+/**
+ * 쿠키 저장 (setCookie)
+ * cookieName = 쿠키 이름
+ * value = 쿠키에 넣을 값
+ * exdays = 만료일 (일 단위)
+ * @param cookieName
+ * @param value
+ * @param exdays
+ * @returns
+ */
+function setCookie(cookieName, value, exdays){
+    var exdate = new Date();
+    exdate.setDate(exdate.getDate() + exdays);
+    var cookieValue = escape(value) + ((exdays==null) ? "" : "; expires=" + exdate.toGMTString());
+    document.cookie = cookieName + "=" + cookieValue;
+}
+
+/**
+ * 쿠키 불러오기 (getCookie)
+ * cookieName = 쿠키 이름
+ * @param cookieName
+ * @returns
+ */
+function getCookie(cookieName) {
+    cookieName = cookieName + '=';
+    var cookieData = document.cookie;
+    var start = cookieData.indexOf(cookieName);
+    var cookieValue = '';
+    if(start != -1){
+        start += cookieName.length;
+        var end = cookieData.indexOf(';', start);
+        if(end == -1)end = cookieData.length;
+        cookieValue = cookieData.substring(start, end);
+    }
+    return unescape(cookieValue);
+}
+
+/**
+ * 쿠키 삭제 (deleteCookie)
+ * cookieName = 쿠키 이름
+ * @param cookieName
+ * @returns
+ */
+function deleteCookie(cookieName){
+    var expireDate = new Date();
+    expireDate.setDate(expireDate.getDate() - 1);
+    document.cookie = cookieName + "= " + "; expires=" + expireDate.toGMTString();
+}
+
+
+
+
+
+
+
+
+/**
+ * 로그인 디자인 ,유효성체크
+ * @param 
+ * @returns
+ */
+(function ($) {
+    "use strict";
+
+
+    /*==================================================================
+    [ Focus input ]*/
+    $('.input100').each(function(){
+        $(this).on('blur', function(){
+            if($(this).val().trim() != "") {
+                $(this).addClass('has-val');
+            }
+            else {
+                $(this).removeClass('has-val');
+            }
+        })    
+    })
+  
+  
+    /*==================================================================
+    [ Validate ]*/
+    var input = $('.validate-input .input100');
+
+    $('.validate-form').on('submit',function(){
+        var check = true;
+
+        for(var i=0; i<input.length; i++) {
+            if(validate(input[i]) == false){
+                showValidate(input[i]);
+                check=false;
+            }
+        }
+
+        return check;
+    });
+
+
+    $('.validate-form .input100').each(function(){
+        $(this).focus(function(){
+           hideValidate(this);
+        });
+    });
+
+    function validate (input) {
+        if($(input).attr('type') == 'email' || $(input).attr('name') == 'email') {
+            if($(input).val().trim().match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/) == null) {
+                return false;
+            }
+        }
+        else {
+            if($(input).val().trim() == ''){
+                return false;
+            }
+        }
+    }
+
+    function showValidate(input) {
+        var thisAlert = $(input).parent();
+
+        $(thisAlert).addClass('alert-validate');
+    }
+
+    function hideValidate(input) {
+        var thisAlert = $(input).parent();
+
+        $(thisAlert).removeClass('alert-validate');
+    }
+    
+    /*==================================================================
+    [ Show pass ]*/
+    var showPass = 0;
+    $('.btn-show-pass').on('click', function(){
+        if(showPass == 0) {
+            $(this).next('input').attr('type','text');
+            $(this).addClass('active');
+            showPass = 1;
+        }
+        else {
+            $(this).next('input').attr('type','password');
+            $(this).removeClass('active');
+            showPass = 0;
+        }
+        
+    });
+
+
+})(jQuery);

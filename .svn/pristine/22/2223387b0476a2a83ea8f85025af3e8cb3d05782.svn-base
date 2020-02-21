@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.pe.gizmo80.web.dao.mybatisDao.StoreDAO">
+
+	<insert id="regStore"
+		parameterType="kr.pe.gizmo80.web.bean.StoreBean">
+		insert into tbl_store(
+		seq_no
+		,store_code
+		,deal_cd
+		,trade_cd
+		,progress_cd
+		,use_yn
+		,store_name
+		,level
+		,total_level
+		,trade_price
+		,deposit_price
+		,monthly_price
+		,rent_price
+		,detail_note
+		,manage_note
+		,image
+		,crt_id
+		,kinds
+		,lotting_out_area
+		,exclusive_area
+		,now_store
+		,recom_store
+		,last_chg_dt
+		)values(
+		fn_nextval('seq_store')
+		,#{store_code}
+		,#{deal_cd}
+		,#{trade_cd}
+		,#{progress_cd}
+		,#{use_yn}
+		,#{store_name}
+		,#{level}
+		,#{total_level}
+		,#{trade_price}
+		,#{deposit_price}
+		,#{monthly_price}
+		,#{rent_price}
+		,#{detail_note}
+		,#{manage_note}
+		,#{image}
+		,#{crt_id}
+		,#{kinds}
+		,#{lotting_out_area}
+		,#{exclusive_area}
+		,#{now_store}
+		,#{recom_store}
+		,#{last_chg_dt}
+		)
+	</insert>
+
+	<select id="selectStoreList" parameterType="int"
+		resultType="kr.pe.gizmo80.web.bean.StoreBean">
+		select
+		seq_no as seqNo
+		,CASE
+		WHEN trade_cd = '1'
+		THEN '매도'
+		WHEN trade_cd = '2'
+		THEN '매수' END AS trade_cd -- 매매 구분
+		, CASE
+		WHEN deal_cd = '1'
+		THEN '매매'
+		WHEN deal_cd = '2'
+		THEN '전세'
+		WHEN deal_cd = '3'
+		THEN '월세'
+		WHEN deal_cd = '4'
+		THEN '단기임대'
+		END AS deal_cd -- 구분
+		, case
+		when kinds = '1'
+		then '단지상가'
+		when kinds = '2'
+		then '일반상가'
+		when kinds = '3'
+		then '복합상가'
+		when kinds = '4'
+		then '기타상가'
+		end as kinds -- 종류
+		,CASE
+		WHEN progress_cd = '1'
+		THEN '등록'
+		WHEN progress_cd = '2'
+		THEN '연락'
+		WHEN progress_cd = '3'
+		THEN '진행'
+		WHEN progress_cd = '4'
+		THEN '계약중'
+		WHEN progress_cd = '5'
+		THEN '협의중'
+		END AS progress_cd
+		,use_yn -- 표출여부
+		,store_name -- 매물코드
+		,lotting_out_area -- 분양면적
+		,exclusive_area -- 전용면적
+		,level -- 해당층
+		,total_level -- 총층
+		,FORMAT(trade_price,0) as trade_price -- 매매가
+		,FORMAT(deposit_price,0) as deposit_price -- 보증금
+		,FORMAT(monthly_price,0) as monthly_price -- 월세
+		,FORMAT(rent_price,0) as rent_price -- 대출금
+		,now_store -- 현재업종
+		,recom_store -- 추천업종
+		,detail_note -- 세부정보
+		,manage_note -- 운영정보
+		,image
+		,crt_id
+		, DATE_FORMAT(crt_dtm, '%Y-%m-%d') as crt_dtm
+		from tbl_store
+		ORDER BY crt_dtm DESC
+		LIMIT #{limit},10
+	</select>
+</mapper>

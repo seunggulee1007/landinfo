@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.pe.gizmo80.web.dao.mybatisDao.AptAreaDAO">
+
+	<insert id="regAptArea"
+		parameterType="kr.pe.gizmo80.web.bean.AptAreaBean">
+		insert into tbl_apt_area(
+		seq_no
+		,type
+		,pyeong
+		,exclusive_area
+		,com_liv_area
+		,com_etc_area
+		,land_portion
+		,households
+		,crt_id
+		,unit_seq
+		,image
+		)values(
+		fn_nextval('seq_tbl_area')
+		,#{type}
+		,#{pyeong}
+		,#{exclusive_area}
+		,#{com_liv_area}
+		,#{com_etc_area}
+		,#{land_portion}
+		,#{households}
+		,#{crt_id}
+		,#{unit_seq}
+		,#{image}
+		)
+	</insert>
+
+	<select id="getAptAreaCombo" parameterType="int"
+		resultType="kr.pe.gizmo80.web.bean.AptAreaBean">
+		select
+		seq_no
+		,pyeong
+		from tbl_apt_area
+		where unit_seq = #{seq_no}
+	</select>
+
+	<select id="selectAptArea" parameterType="int"
+		resultType="kr.pe.gizmo80.web.bean.AptAreaBean">
+		select
+		type -- 타입
+		,pyeong -- 평형
+		,exclusive_area -- 전용면적
+		,com_liv_area -- 주거공용면적
+		,com_etc_area -- 기타공용면적
+		,land_portion -- 대지지분
+		,image
+
+		from tbl_apt_area
+		<if test="int > 0">
+			where
+			unit_seq = #{seq_no}
+		</if>
+	</select>
+</mapper>

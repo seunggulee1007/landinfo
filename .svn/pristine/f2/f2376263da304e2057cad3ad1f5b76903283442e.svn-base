@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.pe.gizmo80.web.dao.mybatisDao.AptGroupDAO">
+
+    <insert id="regAptGroup" parameterType="kr.pe.gizmo80.web.bean.AptGroupBean">
+        insert into tbl_apt_group(
+            apt_code
+            ,dong
+            ,level
+            ,total_level
+            ,room_way
+            ,trade_price
+            ,payment_price
+            ,middle_lone_price
+            ,add_payment_price
+            ,premium_price
+            ,pre_option_price
+            ,option_price
+            ,use_yn
+            ,seq_no
+            ,unit_seq
+            ,trade_cd
+            ,deal_cd
+            ,pyeong
+            ,progress_cd
+            ,last_chg_dt
+            ,crt_id
+            ,move_in_dt
+            ,detail_note
+            ,manage_note
+            ,image
+        )values(
+            #{aptCode}
+            ,#{dong}
+            ,#{level}
+            ,#{total_level}
+            ,#{room_way}
+            ,#{trade_price}
+            ,#{payment_price}
+            ,#{middle_lone_price}
+            ,#{add_payment_price}
+            ,#{premium_price}
+            ,#{pre_option_price}
+            ,#{option_price}
+            ,#{use_yn}
+            ,fn_nextval('seq_tbl_group')
+            ,#{unit_seq}
+            ,#{trade_cd}
+            ,#{deal_cd}
+            ,#{pyeong}
+            ,#{progress_cd}
+            ,#{last_chg_dt}
+            ,#{crt_id}
+            ,#{move_in_dt}
+            ,#{detail_note}
+            ,#{manage_note}
+            ,#{image}
+        )
+    </insert>
+    
+</mapper>

@@ -1,0 +1,93 @@
+var oEditors = [];
+
+var app = new Vue({
+    el : "#app",
+    data : {
+        errors         : []                        // 에러 담을 변수
+        ,posts  : []
+        ,view_visible : true
+        ,modify_visible : false
+        ,count : 0
+    },
+    created : function(){                           // 돔이 로딩 되기 전 실행되는 메서드.
+        axios({
+            method : "post",
+            url : "/getLineNote",
+            params : {
+                seqNo : $("#seqNo").val()
+            }
+        })
+        .then(function(response){
+            this.posts = response.data.list
+            nhn.husky.EZCreator.createInIFrame({
+                oAppRef : oEditors,
+                elPlaceHolder : "contents",                                     // 에디터를 적용할  textarea ID
+                sSkinURI : "/resources/smarteditor/SmartEditor2Skin.html",      // Editor HTML 파일 위치
+                fCreator:"createSEditor2",
+                htParams : {                                                    // 툴바 사용 여부(true/false)
+                    bUseToolbar : true ,                                        // 입력창 크기 조절바 사용 여부(true/false)
+                    bUseVerticalResizer : true,                                 // 모드 탭(Editor|HTML|TEXT)사용여부 (true/false)
+                    bUseModeChanger : true                                      // 전송버튼 클릭 이벤트
+                }
+            })
+        }.bind(this))
+        .catch(function(e){
+            this.errors.push(e)
+        });
+        
+    },
+    mounted : function(){
+    	
+    },
+    methods : {
+        modifyLine : function(){                                                // 수정 폼 보여주기
+        	if(this.count == 0){
+        		
+        		nhn.husky.EZCreator.createInIFrame({
+        			oAppRef : oEditors,
+        			elPlaceHolder : "contents",                                     // 에디터를 적용할  textarea ID
+        			sSkinURI : "/resources/smarteditor/SmartEditor2Skin.html",      // Editor HTML 파일 위치
+        			fCreator:"createSEditor2",
+        			htParams : {                                                    // 툴바 사용 여부(true/false)
+        				bUseToolbar : true ,                                        // 입력창 크기 조절바 사용 여부(true/false)
+        				bUseVerticalResizer : true,                                 // 모드 탭(Editor|HTML|TEXT)사용여부 (true/false)
+        				bUseModeChanger : true                                      // 전송버튼 클릭 이벤트
+        			}
+        		})
+        	}
+            this.count++;
+            this.view_visible = false;
+            this.modify_visible = true;
+        },
+        backModify : function(){                                                // 수정 취소
+            this.view_visible = true;
+            this.modify_visible = false;
+        },
+        modifyLineNote : function(){
+            if(!confirm("수정하시겠습니까?")){
+                return;
+            }
+            oEditors.getById["contents"].exec("UPDATE_CONTENTS_FIELD",[]);
+            $.ajax({
+                url : "/modifyLineNote",
+                method : "put",
+                data : {
+                    title       : $("#title").val()         // 제목
+                    ,contents   : $("#contents").val()      // 내용
+                    ,seqNo      : $("#seqNo").val()         // 일련번호
+                },
+                error : function(e){
+                    alert(e);
+                },
+                success : function(data){
+                    alert(data.resultMsg);
+                    location.reload();
+                }
+            })
+        }
+    }
+});
+
+
+
+

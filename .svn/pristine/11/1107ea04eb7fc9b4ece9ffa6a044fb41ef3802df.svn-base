@@ -1,0 +1,27 @@
+
+var app = new Vue({
+    el : "#app",
+    data : {
+        errors         : []                        // 에러 담을 변수
+		,posts  : []
+    },
+    created : function(){                           // 돔이 로딩 되기 전 실행되는 메서드.
+    	axios({
+            method : "post",
+            url : "/getLineNote",
+            params : {
+                seqNo : $("#seqNo").val()
+            }
+        })
+        .then(function(response){
+            console.log(response.data.list);
+            this.posts = response.data.list
+        }.bind(this))
+        .catch(function(e){
+            this.errors.push(e)
+        });
+    },
+    methods : {
+            
+    }
+});

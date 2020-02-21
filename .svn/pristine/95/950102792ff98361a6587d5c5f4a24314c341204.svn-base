@@ -1,0 +1,9 @@
+package kr.pe.gizmo80.web.service.aptMemberService;
+
+import java.util.Map;
+
+import org.springframework.data.domain.Pageable;
+
+public interface AptMemberService {
+    public Map<String, Object> getAptMemberList(Pageable pageable) throws Exception;
+}

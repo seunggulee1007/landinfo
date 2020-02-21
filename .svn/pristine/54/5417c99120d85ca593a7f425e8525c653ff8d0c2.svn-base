@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.pe.gizmo80.web.dao.mybatisDao.LineNoteDAO">
+
+    <insert id="regLineNote" parameterType="kr.pe.gizmo80.web.bean.LineNoteBean">
+        insert into tbl_line_note(
+            seq_no
+            ,title
+            ,contents
+            ,crt_id
+        )values(
+            fn_nextval('seq_line_note')
+            ,#{title}
+            ,#{contents}
+            ,#{crt_id}
+        )
+    </insert>
+    
+    <select id="selectLineNoteList" parameterType="int" resultType="kr.pe.gizmo80.web.bean.LineNoteBean">
+        select 
+            seq_no as seqNo
+            ,title
+            ,contents
+            ,crt_id
+            , DATE_FORMAT(crt_dtm, '%Y-%m-%d') as crt_dtm
+            from tbl_line_note
+            ORDER BY crt_dtm DESC
+            LIMIT #{limit},10
+    </select>
+</mapper>

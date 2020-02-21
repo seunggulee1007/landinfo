@@ -1,0 +1,63 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+
+<script src="/resources/smarteditor/js/service/HuskyEZCreator.js"></script>
+</head>
+<body>
+<form action="/regLineNote">
+    <table>
+        <tr>
+            <td>제목</td>
+            <td><input type="text" id="title" name="title"></td>
+        </tr>
+        <tr>
+            <td>내용</td>
+            <td>
+	            <textarea name="contents" id="contents">
+	            </textarea>
+            </td>
+        </tr>
+    </table>
+    <button type="button" id="goSubmit">전송</button>
+</form>
+<script>
+$(document).ready(function(){
+	$("#goSubmit").click(function(){
+		var btn = document.getElementById("goSubmit");
+		submitContents(btn);
+	});
+});
+    var oEditors = [];
+    
+    nhn.husky.EZCreator.createInIFrame({
+        oAppRef : oEditors,
+        elPlaceHolder : "contents",                                     // 에디터를 적용할  textarea ID
+        sSkinURI : "/resources/smarteditor/SmartEditor2Skin.html",      // Editor HTML 파일 위치
+        fCreator:"createSEditor2",
+        htParams : {                                                    // 툴바 사용 여부(true/false)
+            bUseToolbar : true ,                                        // 입력창 크기 조절바 사용 여부(true/false)
+            bUseVerticalResizer : true,                                 // 모드 탭(Editor|HTML|TEXT)사용여부 (true/false)
+            bUseModeChanger : true                                      // 전송버튼 클릭 이벤트
+        }
+        
+    })
+function submitContents(elClickedObj){
+    	alert("submit");
+    	oEditors.getById["contents"].exec("UPDATE_CONTENTS_FIELD",[]);
+    try{
+    	alert("ddd");
+    	elClickedObj.form.submit();
+    	alert("gggg");
+    }catch(e){
+    	
+    }
+}
+</script>
+
+</body>
+</html>

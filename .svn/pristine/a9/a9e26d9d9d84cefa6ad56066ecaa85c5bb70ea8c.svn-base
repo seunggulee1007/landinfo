@@ -1,0 +1,26 @@
+package kr.pe.gizmo80.web.controller;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class TestController {
+
+    @RequestMapping("/aioxfile")
+    public String aioxfile() throws Exception {
+        return "test/aioxfile";
+    }
+
+    @RequestMapping("/testpage")
+    public String testpage(Model model,
+            @PageableDefault(sort = { "seqNo" }, direction = Direction.DESC, size = 5) Pageable pageable)
+            throws Exception {
+
+        return "test/testpage";
+    }
+
+}
