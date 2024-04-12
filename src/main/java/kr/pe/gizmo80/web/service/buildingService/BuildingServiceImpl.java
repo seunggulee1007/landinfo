@@ -3,7 +3,6 @@ package kr.pe.gizmo80.web.service.buildingService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,7 +30,7 @@ public class BuildingServiceImpl extends LandInfoService implements BuildingServ
 
         try {
             Page<OtherBean> list = JpaOtherDAO.findAll(pageable);
-            Stream<OtherBean> stream = JpaOtherDAO.findAll().stream();
+            // Stream<OtherBean> stream = JpaOtherDAO.findAll().stream();
 
             map.put("list", list);
         } catch (Exception e) {

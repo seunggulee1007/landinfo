@@ -3,7 +3,6 @@ package kr.pe.gizmo80.web.service.storeService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,7 +30,7 @@ public class StoreServiceImpl extends LandInfoService implements StoreService {
 
         try {
             Page<StoreBean> list = JpaStoreDAO.findAll(pageable);
-            Stream<StoreBean> stream = JpaStoreDAO.findAll().stream();
+            // Stream<StoreBean> stream = JpaStoreDAO.findAll().stream();
 
             map.put("list", list);
         } catch (Exception e) {
